@@ -7,11 +7,11 @@ JCars Logistics is a company that imports, sells, and delivers vehicles to custo
 2. To evaluate operational and customer performance by analyzing vehicle, customer, branch, geographic, sales representative, payment, delivery, and logistics performance.
 3. To identify business opportunities and areas requiring attention by analyzing sales channels, lead sources, returns, cancellations, customer experience, and unusual transactions.
 # Dataset and grain
-1. Source file: Jcars_data.csv is a single flat table with 32 columns.
-2. Grain: Each row represents one vehicle sales order line: a single order for one or more units of one vehicle configuration, sold by one sales rep to one customer through one branch.
-3. Row count: 276 order lines, representing 466 total units sold.
+1. Source file: Jcars_data.csv is a single flat table 
+2. Grain: Each row represents one vehicle sales order line, a single order for one or more units of one vehicle configuration, sold by one sales rep to one customer through one branch.
+3. Row count: 255 orders , representing 415 total units sold.
 4. Date coverage: Order Date spans 1 Jan 2025 – 1 Dec 2026.
-5. Business entities represented in the columns: customer (name, type, age), location (region, county, city), branch, sales rep, lead source/channel, vehicle (make, model, type, year, fuel, transmission, color), transaction economics (units, price, cost, discount, delivery fee, revenue recorded), payment (method, status), logistics (delivery status, delivery date, logistics cost), and customer experience (rating, review count, returned flag).
+5. Business entities represented in the columns: customer (name, type, age, rating), location (region, county, city, branch), , sales rep, lead source, vehicle (make, model, type, year, fuel, transmission, color), transactions made (units, price, cost, discount, delivery fee, revenue recorded), payment (method, status), logistics (delivery status, delivery date, logistics cost), and customer experience (rating, review count, returned flag).
 
 
 ## Data Quality Audit
@@ -77,7 +77,36 @@ The following DAX functions were applied to help build visualizations and KPIs i
     <img width="906" height="516" alt="image" src="https://github.com/user-attachments/assets/364d47ff-68f0-46bc-ba18-8cb7dff84df5" />
 
     <img width="912" height="586" alt="image" src="https://github.com/user-attachments/assets/2984f170-2e83-49ea-b638-dfa689ae2db8" />
+    ## Business terms used in jcars data anlysis
+    
+- Gross Profit – The money left after subtracting the cost of the products from the money earned from selling them.
+- Gross Profit Margin – The percentage of sales that remains as profit after the cost of the products has been deducted.
+- Units Sold – The total number of products or vehicles that were sold.
+- Net Profit – The money remaining after all business expenses have been paid.
+- Revenue – The total amount of money earned from selling products or services before expenses are deducted.
+- Total – The overall or combined amount of something.
+- Rturned Rate – The percentage of products that were returned by customers compared with the total products sold.
+- Cancelled Revenue – The amount of money associated with sales that were cancelled and therefore not completed
+  # Business insights and reccommendations
+  ## Business insights
+  The dashboards above shows a business with high revenue and positive profitability, with performance largely driven by Toyota vehicles, SUVs, and strong-performing branches and sales representatives. However, the 79 returns, 3.57 average customer rating, and units associated with pending, partially paid, cancelled, and refunded transactions indicate areas that require attention.The business recorded approximately KSh 1.39 billion in revenue from 415 units sold, generating KSh 387.63 million in gross profit and approximately KSh 362 million in net profit, indicating strong profitability. Toyota generated the highest revenue and gross profit among the car makes, while SUVs recorded the highest number of units sold, followed by crossovers and hatchbacks, showing stronger demand for these vehicle types. Sales performance varied among sales representatives, with some recording higher unit sales than others. Although most transactions were paid, there were also pending, partially paid, cancelled, and refunded transactions that may affect completed sales and cash flow. The average customer rating was 3.57 out of 5, indicating moderate customer satisfaction, while 79 returns highlight the need to monitor vehicle quality, customer expectations, and after-sales service. Revenue also varied across months and branches, with some periods and branches contributing more than others. Petrol vehicles contributed the largest share of revenue, while manual transmission vehicles generated more revenue than automatic vehicles.
+  ## Business reccommendations
+The business should focus on maintaining the strong performance of high-selling brands such as Toyota and popular vehicle types such as SUVs, while ensuring that sufficient stock is available to meet customer demand. Sales representatives with lower sales volumes should be supported through additional training, performance monitoring, and effective sales strategies. The business should also work on reducing the 79 returns by improving vehicle quality checks, providing accurate vehicle information, and strengthening after-sales services. Since the average customer rating was 3.57 out of 5, customer feedback should be regularly collected and used to address common complaints and improve customer satisfaction. Management should also follow up on pending and partially paid transactions to improve payment completion and reduce cancelled or refunded sales. Finally, the business should monitor monthly and branch-level performance to identify periods and locations with lower sales and develop targeted promotions and strategies to improve their performance.
+# World business assumptions
+Monetary values with no currency marker are assumed to be KES.
+Fixed exchange rates (USD 129.54, EUR 147.84, ZAR 7.93) are applied consistently project-wide rather than varying by transaction date; cite your source/date in the final write-up.
+Revenue is defined and calculated as Units Sold × Unit Selling Price × (1 − Discount) + Delivery Fee, not taken from the raw "Revenue Recorded" field.
+Gross Profit = Revenue − (Unit Cost × Units Sold); Gross Profit Margin = Gross Profit ÷ Revenue.
+Discount values above 50% are treated as invalid rather than trusted.
+Customer Rating is normalized to a 0–5 scale; values outside that range are treated as invalid.
+Customer Age outside 18–100 is treated as invalid.
+Logistics Cost of 0 on a "Delivered" order, and Revenue Recorded of 0 on a non-cancelled/non-refunded order, are both treated as suspicious rather than genuine zeros
+## My questions as an analyst
+1. What percentage of total order volume is tied up in pending, partially paid, or refunded statuses, and which branches account for the highest uncollected revenue? points specific branch yards where credit controls or payment collection workflows need stricter enforcement to prevent bad debts.
+2. How do vehicle preferences, payment methods, and discount sensitivity differ between corporate and individual customers across age groups? It Enables targeted inventory sourcing and custom financing packages based on demographic patterns (e.g., corporate buyers favoring fleets of petrol crossovers vs. younger individual buyers).
+3. How do delivery fulfillment times and logistics costs vary by county and branch yard, and how does this impact customer satisfaction ratings? Identifies whether regional logistics bottlenecks (e.g., long delivery times or high freight costs to specific yards) directly cause lower customer ratings or order cancellations.
 
-
+# Conclusion
+The data transformation and business intelligence solution developed for JCars Logistics successfully converted a raw, multi-currency flat dataset into an interactive star-schema Power BI model. By standardizing categorical variables, resolving currency conversions into KES, and auditing data quality issues, the project established a reliable baseline for executive decision-making. The analysis showed that the business recorded KSh 1.39 billion in revenue, 255 orders made, 415 units sold, and approximately KSh 362 million in net profit, with Toyota, Nakuru, petrol vehicles, and manual transmission contributing significantly to the recorded performance. Overall, the dashboard provided useful insights that can support better inventory planning, branch performance improvement, and profitability management. By monitoring high-performing and lower-performing areas, JCars can make informed decisions aimed at improving sales and maintaining sustainable business performance.
 
 
