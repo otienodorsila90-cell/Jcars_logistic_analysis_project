@@ -28,4 +28,56 @@ JCars Logistics is a company that imports, sells, and delivers vehicles to custo
 | 9 | Inconsistent payment and delivery status values | Different labels for the same status could affect payment and delivery analysis. | Status values were standardized into consistent categories. |
 | 10 | Inconsistent vehicle makes, models, fuel types, and transmission values | Similar vehicles could be treated as different categories in analysis. | Vehicle and related categorical values were standardized using mapping tables. |
 | 11 | Incomplete geographic information | Missing county or region values could affect geographic performance analysis. | Missing county values were derived from the branch, while missing regions were derived from the county. |
+# Currency standardization
+  The following DAX function was used to convert other currencies like USD, ZAR and EUR to Kenyan shillings
+  
+  `Unit Selling Price KES =SWITCH(TRUE(),'Jcars'[Currency] = "KES", 'Jcars'[Unit Selling Price],'Jcars'[Currency] = "USD", 'Jcars'[Unit Selling Price] * 130,'Jcars'[Currency] = "EUR", 'Jcars'[Unit Selling Price] * 150,'Jcars'[Currency] = "ZAR", 'Jcars'[Unit Selling Price] * 7.5,BLANK())`
+
+Another DAX function was used to convert numerics with suffix   `M` to KES million shillings
+
+`Amount Converted =VAR Amount = 'Jcars'[Logistic cost]
+RETURN IF(RIGHT(Amount, 1) = "M", VALUE(LEFT(Amount, LEN(Amount) - 1)) * 1000000,VALUE(Amount))`
+# Data cleaning and preparation using power query
+The data cleaning process was carried out using **Power Query Editor** to improve the quality, consistency, and reliability of the dataset. All columns were trimmed to remove unnecessary leading and trailing spaces, and duplicate records were identified and removed to avoid repeated entries. The **Order ID** column was converted to **uppercase** to maintain consistency. Invalid entries such as **N/A**, **NA**, **null**, **missing**, **unknown**, and blank values were replaced with null values. **Find and Replace** was used to correct inconsistent spellings and abbreviations such as **cental** to **Central**, **Cost** to **Coast**, **Nbi** and **Nrb** to **Nairobi**, and **Westen** to **Western**. Similar standardization was applied to customer types, counties, cities, branches, sales representatives, lead sources, vehicle makes and models, payment methods, payment statuses, delivery statuses, vehicle types, fuel types, transmission types, and colours. Missing **County** values were filled using the corresponding **Branch**, while missing **Region** values were filled using the corresponding **County**. For example, **Kisumu Yard** was mapped to **Kisumu County**, and **Kisumu County** was mapped to the **Nyanza Region**. Other mappings included **Eldoret Yard to Uasin Gishu**, **Kakamega Yard to Kakamega**, **Mombasa Port Yard to Mombasa**, **Nairobi HQ to Nairobi**, **Nakuru Yard to Nakuru**, **Thika Yard to Kiambu**, and **Athi River Yard to Machakos**, with the respective counties then mapped to their regions. Numerical fields were converted to appropriate data types and checked against valid ranges, while discounts and customer ratings were standardized, Find and replace was used to remove out of 5. Order and delivery dates were converted into proper date formats. Monetary fields were cleaned by identifying **KES, USD, EUR, and ZAR**, removing currency symbols and unnecessary text, converting values with an **M** suffix into full numerical amounts, such as 2M to 2,000,000, and converting foreign currencies to **Kenyan Shillings (KES)** using the applicable exchange rates.
+# Data modelling
+This step was done in power query to establish a one to many relationships between the facts and dimensional tables. The four dimensional tables that used to form a star schema model view were;
+
+1. **dim_location** that cointained the following columns Branch, city ,county ,region and Location ID
+
+2. **dim_customers** that contained the columns Customer age, customer type, customer name, Customer ID
+
+3. **dim_salesrep** that contained the columns Sales rep ,sales rep ID
+
+4. **dim_vehicle** that contained the columns Car make, car model, colour, transmission ,fuel type, vehicle ID, Vehicle type ,vehicle year
+
+   The facts table contained all the  other remaining columns that were not in the dimensional tables and the primary keys in relation to every dimeensional table.The columns in the facts table were:**Order ID, order date ,delivery date, Lead source, units sold, unit selling price, unit cost, discount, delivery fee, logistics cost, payment method ,payment status, delivery status, customer rating, review count, returned, revenue recorded , customer ID, Sales rep ID, Location ID, Gross profit and gross profit margin**
+
+The relationships were created prior to creating a dashboard in order to obtain an interactive dashboard in the future step of the project. Instead of using the date functions to generate months ,week and day of the delivery or order date another option was found in visualization to find  month revenue. The step taken to  month revenue is justified by the image below, by clicking out the year and day to only remain with the month 
+
+<img width="557" height="384" alt="image" src="https://github.com/user-attachments/assets/68fa0371-fd78-49a7-abbb-4df24983576b" />
+
+   
+The IDs were generated by adding an index column from 1 after removing duplicates in order to obtain primary keys that were necessary for the facts table to create the required relationship. To create dimensional tables the jcars data table was referenced four times and renamed to a relatable name, Unnecessary columns were removed to obtain the required columns in each dim table. The original table was replaced to be the facts table. The facts tables was merged to the dimensional tables in order to obtain primary keys that were the IDs from the dimensional table. The facts table contained all the transactional columns ,primary keys and every other column that was not in the dimensional table
+# DAX functions that were applied 
+The following DAX functions were applied to help build visualizations and KPIs in my dashboard:
+1. Total units sold = sum('Jcars_data facts table'[Units Sold])
+2. Total gross profit = sum('Jcars_data facts table'[Grosss profit])
+3. Total net profit = [Total gross profit]-sum('Jcars_data facts table'[Logistics Cost])
+4. total revenue recorded = sum('Jcars_data facts table'[Revenue Recorded])
+5. total orders = CALCULATE(COUNTROWS('Jcars_data facts table'))
+6. Gross profit margin = 'Jcars_data facts table'[Grosss profit]/(('Jcars_data facts table'[Units Sold]* 'Jcars_data facts table'[Unit Selling Price])* (1-'Jcars_data facts table'[Discount]))
+7. Grosss profit = (('Jcars_data facts table'[Units Sold]* 'Jcars_data facts table'[Unit Selling Price]* (1-'Jcars_data facts table'[Discount]))-('Jcars_data facts table'[Units Sold]*'Jcars_data facts table'[Unit Cost]))
+8. Total Returns = CALCULATE([Total Orders],'Jcars_data facts table'[Returned] = "Yes"
+9. Return Rate = DIVIDE([Total Returns], [total orders])
+10. Cancelled Revenue = CALCULATE([total revenue recorded],'Jcars_data facts table'[Delivery Status] = "Cancelled")
+    # Executive dashboard
+    An executive dashboard was built to anwser business questions by simply visualizing it. The dashboard contained slicers for interactivity, KPIs and a title that would make it easy to understand.The following diagrams shows the dashboard built for Jcars data
+    <img width="903" height="537" alt="image" src="https://github.com/user-attachments/assets/a392ae9f-8b56-4cef-ad63-7432f67a4de8" />
+
+    <img width="906" height="516" alt="image" src="https://github.com/user-attachments/assets/364d47ff-68f0-46bc-ba18-8cb7dff84df5" />
+
+    <img width="912" height="586" alt="image" src="https://github.com/user-attachments/assets/2984f170-2e83-49ea-b638-dfa689ae2db8" />
+
+
+
 
