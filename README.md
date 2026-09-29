@@ -50,7 +50,7 @@ This step was done in power query to establish a one to many relationships betwe
 
 4. **dim_vehicle** that contained the columns Car make, car model, colour, transmission ,fuel type, vehicle ID, Vehicle type ,vehicle year
 
-   The facts table contained all the  other remaining columns that were not in the dimensional tables and the primary keys in relation to every dimeensional table.The columns in the facts table were:**Order ID, order date ,delivery date, Lead source, units sold, unit selling price, unit cost, discount, delivery fee, logistics cost, payment method ,payment status, delivery status, customer rating, review count, returned, revenue recorded , customer ID, Sales rep ID, Location ID, Gross profit and gross profit margin**
+The facts table contained all the  other remaining columns that were not in the dimensional tables and the primary keys in relation to every dimeensional table.The columns in the facts table were:**Order ID, order date ,delivery date, Lead source, units sold, unit selling price, unit cost, discount, delivery fee, logistics cost, payment method ,payment status, delivery status, customer rating, review count, returned, revenue recorded , customer ID, Sales rep ID, Location ID, Gross profit and gross profit margin**
 
 The relationships were created prior to creating a dashboard in order to obtain an interactive dashboard in the future step of the project. Instead of using the date functions to generate months ,week and day of the delivery or order date another option was found in visualization to find  month revenue. The step taken to  month revenue is justified by the image below, by clicking out the year and day to only remain with the month 
 
