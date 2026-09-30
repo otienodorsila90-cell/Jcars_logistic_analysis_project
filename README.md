@@ -14,7 +14,7 @@ JCars Logistics is a company that imports, sells, and delivers vehicles to custo
 5. Business entities represented in the columns: customer (name, type, age, rating), location (region, county, city, branch), , sales rep, lead source, vehicle (make, model, type, year, fuel, transmission, color), transactions made (units, price, cost, discount, delivery fee, revenue recorded), payment (method, status), logistics (delivery status, delivery date, logistics cost), and customer experience (rating, review count, returned flag).
 
 
-## Data Quality Audit
+# Data Quality Audit
 | # | Data Quality Issue | Impact on Analysis | Action Taken |
 |---|---|---|---|
 | 1 | Inconsistent or misspelled categories such as `toyota`, `toyta`, `totoya`, `harier`, and `hondaa` | The same category could appear as different values, affecting totals and visualizations. | Mapping tables were created to standardize different variations into consistent labels. |
